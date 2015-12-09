@@ -1,4 +1,4 @@
-# ArduinoML implementation usin Java
+# ArduinoML DSL implementation using Java
 
 * Authors:
     * Camille Boinaud [[camille.boinaud@etu.unice.fr](mailto:camille.boinaud@etu.unice.fr)]    
@@ -8,7 +8,7 @@
     * V1.0 : 12/10/2015 00:15
 
 
-## Syntax exemple
+## Syntax example
     
 ```
 // Creating a new arduino application
