@@ -1,5 +1,6 @@
 package fr.unice.polytech.arduinoml.dsl;
 
+import fr.unice.polytech.arduinoml.dsl.exceptions.NotValidDescriptionException;
 import fr.unice.polytech.arduinoml.kernel.App;
 import fr.unice.polytech.arduinoml.kernel.behavioral.State;
 import fr.unice.polytech.arduinoml.kernel.generator.ToWiring;
@@ -90,10 +91,16 @@ public class ArduinoBuilder {
      * This method must be called to end application. It will be in charge
      * of application validation and result export (a simple print for now).
      */
-    public void end(){
-        ToWiring export = new ToWiring();
-        app.accept(export);
-        System.out.println(export.getResult());
+    public void end() throws NotValidDescriptionException {
+
+        if(app.getStates().size() > 0 && app.getBricks().size() > 0) {
+            ToWiring export = new ToWiring();
+            app.accept(export);
+            System.out.println(export.getResult());
+        } else {
+            throw new NotValidDescriptionException("Arduino application cannot be validated, some elements " +
+                    "like sensors, actuators or states are missing");
+        }
     }
 
 
