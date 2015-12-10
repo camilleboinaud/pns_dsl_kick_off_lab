@@ -52,5 +52,5 @@ we chosed not to implement massive checks during creation of applications. The f
 
 ## Todo list
 
-* Javadoc
 * Implement massive checks during application creation
+* Tests

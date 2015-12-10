@@ -9,6 +9,10 @@ import fr.unice.polytech.arduinoml.kernel.structural.Sensor;
 
 /**
  * Created by camille on 09/12/15.
+ *
+ * This class aims to expose a DSL way to describe a state used in arduino application.
+ * The entry point is the constructor method. A state description ends by calling
+ * the end() method.
  */
 public class StateBuilder {
 
@@ -18,6 +22,13 @@ public class StateBuilder {
     protected boolean initial = false;
 
 
+    /**
+     * Entry point to initialize a new state using its name. We also
+     * passed an arduino builder instance to access its model and to
+     * return back to arduino initialization.
+     * @param name
+     * @param arduino
+     */
     StateBuilder(String name, ArduinoBuilder arduino){
 
         arduinoBuilder = arduino;
@@ -33,11 +44,31 @@ public class StateBuilder {
 
     }
 
+    /**
+     * This method should be called to indicate that our state will
+     * be the inial one for arduino application.
+     *
+     * Be careful, this method must be called exactly once over different
+     * states described in your app. If it is called several times, new calls
+     * will replace old ones.
+     *
+     * @return StateBuilder
+     */
     public StateBuilder initial(){
         initial = true;
         return this;
     }
 
+    /**
+     * Describe the state action with a given actuator and a signal.
+     *
+     * Be careful, validation has not been implemented yet, we can't
+     * ensure validity of parameters you passed to method.
+     *
+     * @param actuator
+     * @param signal
+     * @return StateBuilder
+     */
     public StateBuilder action(String actuator, String signal){
 
         Action action = new Action();
@@ -49,6 +80,18 @@ public class StateBuilder {
         return this;
     }
 
+    /**
+     * Describe the state transition to a next state when the given sensor
+     * emits the given signal.
+     *
+     * Be careful, validation has not been implemented yet, we can't
+     * ensure validity of parameters you passed to method.
+     *
+     * @param nextState
+     * @param sensor
+     * @param signal
+     * @return StateBuilder
+     */
     public StateBuilder transition(String nextState, String sensor, String signal){
 
         Transition transition = new Transition();
@@ -63,6 +106,12 @@ public class StateBuilder {
         return this;
     }
 
+    /**
+     * Ends state description and stores it into ArduinoBuilder's
+     * model.
+     *
+     * @return ArduinoBuilder
+     */
     public ArduinoBuilder end(){
 
         if(initial){
@@ -72,7 +121,5 @@ public class StateBuilder {
         arduinoBuilder.app.getStates().add(state);
         return arduinoBuilder;
     }
-
-
 
 }
