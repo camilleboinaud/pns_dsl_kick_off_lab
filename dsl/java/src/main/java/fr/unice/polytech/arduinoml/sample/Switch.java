@@ -1,8 +1,5 @@
 package fr.unice.polytech.arduinoml.sample;
 
-import fr.unice.polytech.arduinoml.dsl.exceptions.BadNamedElementException;
-import fr.unice.polytech.arduinoml.dsl.exceptions.NotValidDescriptionException;
-
 import static fr.unice.polytech.arduinoml.dsl.ArduinoBuilder.*;
 
 /**
@@ -12,32 +9,28 @@ public class Switch {
 
     public static void main(String args[]){
 
-        try {
-            // Creating a new arduino application
-            // Application is composed of : 1..n sensors, 1..n actuators, 1..n states.
+        // Creating a new arduino application
+        // Application is composed of : 1..n sensors, 1..n actuators, 1..n states.
+        // It needs to be ended.
+        arduino("Switch!")
+
+            // Declaring bricks involved in application (sensors and actuators)
+            .sensor("button", 9)
+            .actuator("led", 12)
+
+            // Declaring states involved in application
+            // State is composed of : 1 action + 1 transition (+ 1 initial status).
             // It needs to be ended.
-            arduino("Switch!")
-
-                    // Declaring bricks involved in application (sensors and actuators)
-                    .sensor("button", 9)
-                    .actuator("led", 12)
-
-                    // Declaring states involved in application
-                    // State is composed of : 1 action + 1 transition (+ 1 initial status).
-                    // It needs to be ended.
-                    .state("on")
-                        .action("led", "high")
-                        .transition("off", "button", "high")
-                        .end()
-                    .state("off")
-                        .initial()
-                        .action("led", "low")
-                        .transition("on", "button", "low")
-                        .end()
-                    .end();
-        } catch (BadNamedElementException | NotValidDescriptionException e){
-            e.printStackTrace();
-        }
+            .state("on")
+                .action("led", "high")
+                .transition("off", "button", "high")
+                .end()
+            .state("off")
+                .initial()
+                .action("led", "low")
+                .transition("on", "button", "low")
+                .end()
+            .end();
     }
 
 }

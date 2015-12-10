@@ -1,8 +1,11 @@
 package fr.unice.polytech.arduinoml.dsl;
 
-import fr.unice.polytech.arduinoml.dsl.exceptions.*;
-import fr.unice.polytech.arduinoml.kernel.behavioral.*;
-import fr.unice.polytech.arduinoml.kernel.structural.*;
+import fr.unice.polytech.arduinoml.kernel.behavioral.Action;
+import fr.unice.polytech.arduinoml.kernel.behavioral.State;
+import fr.unice.polytech.arduinoml.kernel.behavioral.Transition;
+import fr.unice.polytech.arduinoml.kernel.structural.Actuator;
+import fr.unice.polytech.arduinoml.kernel.structural.SIGNAL;
+import fr.unice.polytech.arduinoml.kernel.structural.Sensor;
 
 /**
  * Created by camille on 09/12/15.
@@ -66,23 +69,11 @@ public class StateBuilder {
      * @param signal
      * @return StateBuilder
      */
-    public StateBuilder action(String actuator, String signal)
-            throws BadNamedElementException {
+    public StateBuilder action(String actuator, String signal){
 
         Action action = new Action();
-        Actuator act = (Actuator)arduinoBuilder.getBrickByName(actuator);
-
-        if(act != null) {
-            action.setActuator(act);
-        } else {
-            throw new BadBrickException("Actuor you tried to select doesn't exist");
-        }
-
-        try {
-            action.setValue(SIGNAL.valueOf(signal.toUpperCase()));
-        } catch (IllegalArgumentException e){
-            throw new BadSignalException("Signal you tried to select doesn't exist");
-        }
+        action.setActuator((Actuator)arduinoBuilder.getBrickByName(actuator));
+        action.setValue(SIGNAL.valueOf(signal.toUpperCase()));
 
         state.getActions().add(action);
 
@@ -101,29 +92,18 @@ public class StateBuilder {
      * @param signal
      * @return StateBuilder
      */
-    public StateBuilder transition(String nextState, String sensor, String signal)
-            throws BadNamedElementException {
+    public StateBuilder transition(String nextState, String sensor, String signal){
 
-            Transition transition = new Transition();
-            State next = arduinoBuilder.getStateByName(nextState);
-            Sensor sens = (Sensor) arduinoBuilder.getBrickByName(sensor);
+        Transition transition = new Transition();
+        State next = arduinoBuilder.getStateByName(nextState);
 
-            try{
-                transition.setValue(SIGNAL.valueOf(signal.toUpperCase()));
-            } catch (IllegalArgumentException e){
-                throw new BadSignalException("Signal you tried to select doesn't exist");
-            }
+        transition.setValue(SIGNAL.valueOf(signal.toUpperCase()));
+        transition.setNext((next != null) ? next : arduinoBuilder.createState(nextState));
+        transition.setSensor((Sensor)arduinoBuilder.getBrickByName(sensor));
 
-            transition.setNext((next != null) ? next : arduinoBuilder.createState(nextState));
+        state.setTransition(transition);
 
-            if(sens != null) {
-                transition.setSensor(sens);
-            } else {
-                throw new BadBrickException("Sensor you tried to select doesn't exist");
-            }
-
-            state.setTransition(transition);
-            return this;
+        return this;
     }
 
     /**
@@ -132,18 +112,14 @@ public class StateBuilder {
      *
      * @return ArduinoBuilder
      */
-    public ArduinoBuilder end() throws NotValidDescriptionException {
+    public ArduinoBuilder end(){
 
-        if(state.getActions().size() > 0 && state.getTransition() != null) {
-            if (initial) {
-                arduinoBuilder.app.setInitial(state);
-            }
-
-            arduinoBuilder.app.getStates().add(state);
-            return arduinoBuilder;
+        if(initial){
+            arduinoBuilder.app.setInitial(state);
         }
 
-        throw new NotValidDescriptionException("Action or transition is missing to complete state description ");
+        arduinoBuilder.app.getStates().add(state);
+        return arduinoBuilder;
     }
 
 }
