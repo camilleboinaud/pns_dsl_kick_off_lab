@@ -35,5 +35,5 @@ app Switch initial off
 
 A specificity of xtext is the graphical model generation. Thanks to that we described the following model :
 
-![model diagram]("https://github.com/camilleboinaud/pns_dsl_kick_off_lab/blob/master/dsl/external/xtext/doc/model.png" "model diagram")  
+![Model Diagram](https://github.com/camilleboinaud/pns_dsl_kick_off_lab/blob/master/dsl/external/xtext/doc/model.png)  
   
