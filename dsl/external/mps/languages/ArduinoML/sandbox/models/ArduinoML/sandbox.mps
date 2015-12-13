@@ -39,7 +39,7 @@
     </language>
   </registry>
   <node concept="OhiEB" id="6qiZoTiQUK9">
-    <property role="TrG5h" value="RedButton" />
+    <property role="TrG5h" value="Switch" />
     <ref role="OjtWb" node="6qiZoTiSckT" resolve="off" />
     <node concept="OjtP9" id="6qiZoTiSckT" role="OjtWc">
       <property role="TrG5h" value="off" />
