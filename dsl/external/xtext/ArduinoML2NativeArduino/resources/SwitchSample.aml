@@ -1,0 +1,19 @@
+app Switch initial off 
+{
+	bricks {
+		sensor button : 9
+		actuator led : 12
+	}
+	
+	states {
+		on {
+			set led to high
+			if button is high move to off
+		}
+		
+		off {
+			set led to low
+			if button is high move to on
+		}
+	}
+}

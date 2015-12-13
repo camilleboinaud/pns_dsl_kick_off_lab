@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<arduinoML:App xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:arduinoML="fr.unice.polytech.dsl.external.xtext.arduinoML" name="Switch" initial="//@states.1">
+  <bricks xsi:type="arduinoML:Sensor" name="button" pin="9"/>
+  <bricks xsi:type="arduinoML:Actuator" name="led" pin="12"/>
+  <states name="on">
+    <actions actuator="//@bricks.1"/>
+    <transition next="//@states.1" sensor="//@bricks.0"/>
+  </states>
+  <states name="off">
+    <actions actuator="//@bricks.1" value="LOW"/>
+    <transition next="//@states.0" sensor="//@bricks.0"/>
+  </states>
+</arduinoML:App>
