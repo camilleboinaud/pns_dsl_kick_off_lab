@@ -1,5 +1,7 @@
 package fr.unice.polytech.arduinoml.dsl;
 
+import fr.unice.polytech.arduinoml.dsl.exception.BadValidationException;
+import fr.unice.polytech.arduinoml.dsl.exception.ElementNotFoundException;
 import fr.unice.polytech.arduinoml.kernel.behavioral.Action;
 import fr.unice.polytech.arduinoml.kernel.behavioral.State;
 import fr.unice.polytech.arduinoml.kernel.behavioral.Transition;
@@ -69,11 +71,18 @@ public class StateBuilder {
      * @param signal
      * @return StateBuilder
      */
-    public StateBuilder action(String actuator, String signal){
+    public StateBuilder action(String actuator, SIGNAL signal) throws ElementNotFoundException {
 
         Action action = new Action();
-        action.setActuator((Actuator)arduinoBuilder.getBrickByName(actuator));
-        action.setValue(SIGNAL.valueOf(signal.toUpperCase()));
+        Actuator actuatorObj = (Actuator)arduinoBuilder.getBrickByName(actuator);
+
+        if(actuatorObj == null){
+            throw new ElementNotFoundException("Actuator you looked for doesn't exist. " +
+                    "You must define your bricks before using them.");
+        }
+
+        action.setActuator(actuatorObj);
+        action.setValue(signal);
 
         state.getActions().add(action);
 
@@ -92,14 +101,23 @@ public class StateBuilder {
      * @param signal
      * @return StateBuilder
      */
-    public StateBuilder transition(String nextState, String sensor, String signal){
+    public StateBuilder transition(String nextState, String sensor, SIGNAL signal)
+            throws ElementNotFoundException{
 
         Transition transition = new Transition();
         State next = arduinoBuilder.getStateByName(nextState);
 
-        transition.setValue(SIGNAL.valueOf(signal.toUpperCase()));
-        transition.setNext((next != null) ? next : arduinoBuilder.createState(nextState));
-        transition.setSensor((Sensor)arduinoBuilder.getBrickByName(sensor));
+        Sensor sensorObj = (Sensor)arduinoBuilder.getBrickByName(sensor);
+        State nextStateObj = (next != null) ? next : arduinoBuilder.createState(nextState);
+
+        if(sensorObj == null){
+            throw new ElementNotFoundException("Sensor you looked for doesn't exist. " +
+                    "You must define your bricks before using them.");
+        }
+
+        transition.setValue(signal);
+        transition.setNext(nextStateObj);
+        transition.setSensor(sensorObj);
 
         state.setTransition(transition);
 
@@ -112,7 +130,11 @@ public class StateBuilder {
      *
      * @return ArduinoBuilder
      */
-    public ArduinoBuilder end(){
+    public ArduinoBuilder end() throws BadValidationException {
+
+        if(state.getTransition() == null){
+            throw new BadValidationException("Ooops, you tried to define a state without any transition..");
+        }
 
         if(initial){
             arduinoBuilder.app.setInitial(state);

@@ -1,5 +1,8 @@
 package fr.unice.polytech.arduinoml.dsl;
 
+import fr.unice.polytech.arduinoml.dsl.exception.ArduinoMLException;
+import fr.unice.polytech.arduinoml.dsl.exception.BadCallException;
+import fr.unice.polytech.arduinoml.dsl.exception.BadValidationException;
 import fr.unice.polytech.arduinoml.kernel.App;
 import fr.unice.polytech.arduinoml.kernel.behavioral.State;
 import fr.unice.polytech.arduinoml.kernel.generator.ToWiring;
@@ -8,7 +11,7 @@ import fr.unice.polytech.arduinoml.kernel.structural.Brick;
 import fr.unice.polytech.arduinoml.kernel.structural.Sensor;
 
 /**
- * Created by camille on 09/12/15.
+ * Created by camille on 09/12/15. Group D
  *
  * This class aims to expose a DSL way to create an Arduino application. The entry point
  * is the static method of the arduino() method. An Arduino application ends by calling
@@ -16,7 +19,6 @@ import fr.unice.polytech.arduinoml.kernel.structural.Sensor;
  */
 public class ArduinoBuilder {
 
-    protected static ArduinoBuilder instance = null;
     protected App app;
 
 
@@ -82,7 +84,12 @@ public class ArduinoBuilder {
      * @param name
      * @return
      */
-    public StateBuilder state(String name){
+    public StateBuilder state(String name) throws BadCallException {
+
+        if(app.getBricks().size() < 1) {
+            throw new BadCallException("You must define at least a brick before describing a new state.");
+        }
+
         return new StateBuilder(name, this);
     }
 
@@ -90,7 +97,14 @@ public class ArduinoBuilder {
      * This method must be called to end application. It will be in charge
      * of application validation and result export (a simple print for now).
      */
-    public void end(){
+    public void end() throws BadValidationException {
+
+        if(app.getStates().size() < 1){
+            throw new BadValidationException("No state defined in ArduinoML application");
+        } else if (app.getInitial() == null) {
+            throw new BadValidationException("Initial state description missing");
+        }
+
         ToWiring export = new ToWiring();
         app.accept(export);
         System.out.println(export.getResult());
