@@ -45,7 +45,7 @@ public class QueriesGenerated {
     return SPropertyOperations.getString(SLinkOperations.getTarget(_context.getNode(), MetaAdapterFactory.getReferenceLink(0xeb79d3f62f504710L, 0x8bed7c8821e78d91L, 0x6692fd8e52df21f8L, 0x6692fd8e52df2260L, "target")), MetaAdapterFactory.getProperty(0xceab519525ea4f22L, 0x9b92103b95ca8c0cL, 0x110396eaaa4L, 0x110396ec041L, "name"));
   }
   public static Object propertyMacro_GetPropertyValue_7391248726186335402(final PropertyMacroContext _context) {
-    return " " + _context.getSessionObject("current_state_name");
+    return "" + _context.getSessionObject("current_state_name");
   }
   public static Object propertyMacro_GetPropertyValue_7391248726186379167(final PropertyMacroContext _context) {
     return SPropertyOperations.getString(_context.getNode(), MetaAdapterFactory.getProperty(0xceab519525ea4f22L, 0x9b92103b95ca8c0cL, 0x110396eaaa4L, 0x110396ec041L, "name"));

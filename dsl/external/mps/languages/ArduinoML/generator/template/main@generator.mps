@@ -167,12 +167,6 @@
       </concept>
       <concept id="4222318806802425298" name="jetbrains.mps.lang.core.structure.SuppressErrorsAnnotation" flags="ng" index="15s5l7" />
     </language>
-    <language id="eb79d3f6-2f50-4710-8bed-7c8821e78d91" name="ArduinoML">
-      <concept id="7391248726185465641" name="ArduinoML.structure.App" flags="ng" index="OhiEB">
-        <child id="7391248726185465669" name="bricks" index="OhiFb" />
-      </concept>
-      <concept id="7391248726185415036" name="ArduinoML.structure.Brick" flags="ng" index="OhuNM" />
-    </language>
   </registry>
   <node concept="bUwia" id="6qiZoTiPBS$">
     <property role="TrG5h" value="main" />
@@ -209,12 +203,6 @@
       <node concept="j$656" id="6qiZoTiSlP2" role="1lVwrX">
         <ref role="v9R2y" node="6qiZoTiSlP0" resolve="reduce_State" />
       </node>
-    </node>
-  </node>
-  <node concept="OhiEB" id="6qiZoTiR3iT">
-    <node concept="OhuNM" id="6qiZoTiR3iU" role="OhiFb" />
-    <node concept="n94m4" id="6qiZoTiR3iV" role="lGtFl">
-      <ref role="n9lRv" to="c2t8:6qiZoTiPXsD" resolve="App" />
     </node>
   </node>
   <node concept="312cEu" id="6qiZoTiR3j7">
@@ -757,7 +745,7 @@
                     </node>
                     <node concept="3cpWs3" id="6qiZoTiSYwh" role="3uHU7B">
                       <node concept="Xl_RD" id="6qiZoTiSTIK" role="3uHU7B">
-                        <property role="Xl_RC" value="        time = millis(); \nstate_" />
+                        <property role="Xl_RC" value="        time = millis();   state_" />
                       </node>
                       <node concept="Xl_RD" id="6qiZoTiT3rJ" role="3uHU7w">
                         <property role="Xl_RC" value="STATE" />
@@ -821,9 +809,7 @@
                                       </node>
                                     </node>
                                   </node>
-                                  <node concept="Xl_RD" id="6qiZoTiTivI" role="3uHU7B">
-                                    <property role="Xl_RC" value=" " />
-                                  </node>
+                                  <node concept="Xl_RD" id="6qiZoTiTivI" role="3uHU7B" />
                                 </node>
                               </node>
                             </node>
